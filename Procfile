@@ -1,1 +1,1 @@
-web: concurrently \"tsc -w\" \"nodemon ./dist/index.js\"
+web: nodemon ./dist/index.js
