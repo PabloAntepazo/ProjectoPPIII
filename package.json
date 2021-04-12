@@ -1,10 +1,11 @@
 {
-  "name": "Ejemplo1",
+  "name": "ejemplo1",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"tsc -w\" \"nodemon ./dist/index.js\""
+    "dev":"concurrently \"tsc -w\" \"nodemon ./dist/index.js\"",
+    "start":"node dist/index.js"    
   },
   "keywords": [],
   "author": "",

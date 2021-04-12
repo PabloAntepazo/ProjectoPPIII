@@ -5,7 +5,8 @@ class IndexRoutes{
 		this.config();
 	}
 	config():void{
-		this.router.get('/',(req:Request,res:Response)=> res.render("partials/principal"));
+		this.router.get('/',(req:Request,res:Response)=> 
+		res.render("partials/principal"));
 	}
 }
 

@@ -4,6 +4,7 @@ import cors from 'cors';
 import indexRoutes from './Routes/indexRoutes';
 import exphbs from "express-handlebars";
 import path from "path";
+import userRoutes from "./Routes/userRoutes";
 
 class Server{
 	public app:Application;
@@ -28,13 +29,14 @@ class Server{
         //Middlewares
         this.app.use(cors()); //iniciamos cors
         this.app.use(express.json()); //habilitamos el intercambio de objetos json entre aplicaciones
-        this.app.use(express.urlencoded({extended:false}));//habilitamos para recibir datos a traves de formularios html.
+        this.app.use(express.urlencoded({extended:true}));//habilitamos para recibir datos a traves de formularios html.
 
         this.app.use(morgan('dev'));
 	}
     //Van las rutas de la app
 	routes():void{
         this.app.use(indexRoutes);
+		this.app.use("/user", userRoutes); //user sera un objeto existente en la app
     }
 	start():void{
 		this.app.listen(this.app.get('port'),() => {

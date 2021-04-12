@@ -9,7 +9,7 @@ const cors_1 = __importDefault(require("cors"));
 const indexRoutes_1 = __importDefault(require("./Routes/indexRoutes"));
 const express_handlebars_1 = __importDefault(require("express-handlebars"));
 const path_1 = __importDefault(require("path"));
-const port = process.env.PORT || 3000;
+const userRoutes_1 = __importDefault(require("./Routes/userRoutes"));
 class Server {
     constructor() {
         this.app = express_1.default();
@@ -18,7 +18,7 @@ class Server {
     }
     config() {
         //Configuraciones
-        /*this.app.set('port', process.env.PORT || 3000);*/
+        this.app.set('port', process.env.PORT || 3000);
         this.app.set('views', path_1.default.join(__dirname, 'views')); //indicamos que views esta en dist y no en el modulo principal
         this.app.engine('.hbs', express_handlebars_1.default({
             defaultLayout: 'main',
@@ -31,16 +31,17 @@ class Server {
         //Middlewares
         this.app.use(cors_1.default()); //iniciamos cors
         this.app.use(express_1.default.json()); //habilitamos el intercambio de objetos json entre aplicaciones
-        this.app.use(express_1.default.urlencoded({ extended: false })); //habilitamos para recibir datos a traves de formularios html.
+        this.app.use(express_1.default.urlencoded({ extended: true })); //habilitamos para recibir datos a traves de formularios html.
         this.app.use(morgan_1.default('dev'));
     }
     //Van las rutas de la app
     routes() {
         this.app.use(indexRoutes_1.default);
+        this.app.use("/user", userRoutes_1.default); //user sera un objeto existente en la app
     }
     start() {
-        this.app.listen(port, () => {
-            console.log("Server escuchando ", port); 
+        this.app.listen(this.app.get('port'), () => {
+            console.log("Sever escuchando " + this.app.get('port'));
         });
     }
 }
