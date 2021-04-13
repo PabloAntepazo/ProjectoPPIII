@@ -5,7 +5,7 @@ const listado =[
 {"id":"2","usuario":"Pepe Cadena","password":"123456"},
 {"id":"3","usuario":"Martin Gonzalez","password":"123456"}];
 
-class UserController{
+class UserController{ 
 
     public signin (req:Request, res:Response){
     console.log(req.body);
