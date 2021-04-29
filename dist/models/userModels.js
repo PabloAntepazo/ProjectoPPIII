@@ -17,7 +17,7 @@ class UserModel {
     config() {
         return __awaiter(this, void 0, void 0, function* () {
             this.db = yield promise_1.createPool({
-                host: '	grp6m5lz95d9exiz.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306',
+                host: 'grp6m5lz95d9exiz.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
                 user: 'akm2bnkcdo4aof03',
                 password: 'ra4cxq2u2oa075hs',
                 database: 'jrnv31o067vlipqm',

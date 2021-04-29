@@ -8,7 +8,7 @@ class UserModel {
 
 	async config() {//Parametro de conexion con la BD.
 		this.db = await createPool({
-			host: '	grp6m5lz95d9exiz.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306',
+			host: 'grp6m5lz95d9exiz.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
 			user: 'akm2bnkcdo4aof03',
 			password: 'ra4cxq2u2oa075hs',
 			database: 'jrnv31o067vlipqm',
