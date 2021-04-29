@@ -26,6 +26,15 @@ class UserRoutes {
         //Home del Usuario
         this.router.get('/home', userController_1.default.home);
         this.router.post('/home', userController_1.default.process);
+        //CRUD
+        this.router.get('/list', userController_1.default.list);
+        this.router.get('/find/:id', userController_1.default.find);
+        this.router.post('/add', userController_1.default.addUser);
+        this.router.put('/update/:id', userController_1.default.update);
+        this.router.delete('/delete/:id', userController_1.default.delete);
+        this.router.get('/control', userController_1.default.control);
+        //this.router.post('/procesar', userController.procesar);
+        this.router.get('/delete/:id', userController_1.default.controldelete);
     }
 }
 //Exportamos el enrutador con 

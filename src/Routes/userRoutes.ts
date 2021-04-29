@@ -25,7 +25,18 @@ class UserRoutes{
         //Home del Usuario
         this.router.get('/home',userController.home);
         this.router.post('/home', userController.process);
+
+        //CRUD
+		this.router.get('/list',userController.list);
+		this.router.get('/find/:id',userController.find);
+		this.router.post('/add',userController.addUser);
+		this.router.put('/update/:id',userController.update);
+		this.router.delete('/delete/:id',userController.delete);
             
+        this.router.get('/control', userController.control);
+        //this.router.post('/procesar', userController.procesar);
+        this.router.get('/delete/:id',userController.controldelete);
+
 	}
 }
 

@@ -1,5 +1,18 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const userModels_1 = __importDefault(require("../models/userModels"));
 const listado = [
     { "id": "1", "usuario": "Juan Perez", "password": "123456" },
     { "id": "2", "usuario": "Pepe Cadena", "password": "123456" },
@@ -12,33 +25,114 @@ class UserController {
         res.render("partials/signinForm");
     }
     login(req, res) {
-        //console.log(req.body);
-        //res.send('Sign In!!!');
-        //res.send({"Recibido":req.body});
-        if (req.body.user == "Pepe" && req.body.password == "123")
-            res.redirect("./home");
-        //res.redirect("https://www.google.com");
-        else //Falta enviar el resultado estilizado a traves de una vista
-            res.send({ "Usuario no registrado Recibido": req.body });
+        return __awaiter(this, void 0, void 0, function* () {
+            const { usuario, password } = req.body; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
+            const result = yield userModels_1.default.buscarNombre(usuario);
+            console.log(usuario);
+            console.log(password);
+            console.log(result);
+            if (!result)
+                res.send({ "Usuario no registrado Recibido": req.body });
+            if (result.nombre == usuario && result.password == password) {
+                res.redirect("./home");
+                return;
+            }
+            res.send({ "Usuario y/o contraseña incorrectos": req.body });
+        });
     }
     signup(req, res) {
         console.log(req.body);
         //res.send('Sign Up!!!');
         res.render("partials/signupForm");
     }
-    addUser(req, res) {
-        console.log(req.body);
-        //res.send('Sign In!!!');
-        res.send({ "Recibido": req.body });
-    }
+    /*public addUser (req:Request, res:Response){
+    console.log(req.body);
+    //res.send('Sign In!!!');
+    res.send({"Recibido":req.body});
+    }*/
     home(req, res) {
         console.log(req.body);
-        res.render("partials/home", { listado });
+        res.render("partials/home");
+        //res.render("partials/home", {listado});
     }
     process(req, res) {
         console.log(req.body);
-        res.send('Datos Recibidos!!!');
-        //res.render("partials/home, {listado}");
+        //res.send('Datos Recibidos!!!');
+        res.render("partials/home, {listado}");
+    }
+    //CRUD
+    list(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const usuarios = yield userModels_1.default.listar();
+            console.log(usuarios);
+            return res.json(usuarios);
+            //res.send('Listado de usuarios!!!');
+        });
+    }
+    find(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.params.id);
+            const { id } = req.params;
+            const usuario = yield userModels_1.default.buscarId(id);
+            if (usuario)
+                return res.json(usuario);
+            res.status(404).json({ text: "User doesn't exists" });
+        });
+    }
+    addUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const usuario = req.body;
+            delete usuario.repassword;
+            console.log(req.body);
+            //res.send('Usuario agregado!!!');
+            const busqueda = yield userModels_1.default.buscarNombre(usuario.nombre);
+            if (!busqueda) {
+                const result = yield userModels_1.default.crear(usuario);
+                return res.json({ message: 'User saved!!' });
+            }
+            return res.json({ message: 'User exists!!' });
+        });
+    }
+    update(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const { id } = req.params;
+            const result = yield userModels_1.default.actualizar(req.body, id);
+            //res.send('Usuario '+ req.params.id +' actualizado!!!');
+            return res.json({ text: 'updating a user ' + id });
+        });
+    }
+    delete(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            //res.send('Usuario '+ req.params.id +' Eliminado!!!');
+            const { id } = req.params; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
+            const result = yield userModels_1.default.eliminar(id);
+            return res.json({ text: 'deleting a user ' + id });
+        });
+    }
+    //FIN CRUD
+    control(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //res.send('Controles');
+            const usuarios = yield userModels_1.default.listar();
+            //const users = usuarios;
+            //res.render('partials/controls', { users: usuarios });
+            res.render('partials/controls', { users: usuarios });
+        });
+    }
+    controldelete(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const { id } = req.params; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
+            const db = yield userModels_1.default.eliminar(id);
+            //return res.json({text:'El usuario con ID:' + [id] + ' ha sido eliminado satisfactoriamente!' });
+            //res.send('Usuario '+ req.params.id +' Eliminado!!!');
+            const usuarios = yield userModels_1.default.listar();
+            res.render('partials/controls', { users: usuarios });
+            res.redirect('../control');
+        });
     }
 }
 const userController = new UserController();
